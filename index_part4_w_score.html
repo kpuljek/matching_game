@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>The Matching Game</title>
+<style>
+div {
+  position:absolute;
+  width:500px;
+  height:500px;
+}
+img {
+  position:absolute;
+}
+
+#rightside {
+  left:500px;
+  border-left:1px solid black;
+}
+
+#score {
+  position:absolute;
+  top:600px;
+  left:15%;
+}
+
+</style>
+
+<script>
+
+var numberOfFaces=5;
+
+
+function generateFaces(){
+  var theBody=document.getElementById("thebody");
+  var theLeftSide=document.getElementById("leftside");
+  var theRightSide=document.getElementById("rightside");
+  var theScore=document.getElementById("score");
+  var counter=0;
+
+while(counter < numberOfFaces){
+  var img = document.createElement("img")
+  img.src="http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";
+  var image_hposition=Math.floor(Math.random()*400)
+  var image_vposition=Math.floor(Math.random()*400)
+  img.style.top= image_vposition+"px";
+  img.style.left = image_hposition+"px";
+  var face = theLeftSide.appendChild(img);
+  counter++;
+  //console.log("Counter:"+counter); < i used this for debugging and
+  //console.log(numberOfFaces); <      to better understand what's happening
+};
+
+var leftSide_images = theLeftSide.cloneNode(true);
+leftSide_images.removeChild(leftSide_images.lastChild);
+theRightSide.appendChild(leftSide_images);
+
+theBody.onclick= function gameOver(){
+  alert("GAME OVER!\n Your final score was " + (numberOfFaces*2) +"!");
+  theBody.onclick=null;
+  theLeftSide.lastChild.onclick=null;
+  };
+
+theLeftSide.lastChild.onclick=function nextLevel(event){
+  event.stopPropagation();
+  numberOfFaces+=5;
+  theScore.innerHTML=("Score: "+ (numberOfFaces*2));
+  while (theLeftSide.firstChild){
+    theLeftSide.removeChild(theLeftSide.firstChild)
+  };
+  while (theRightSide.firstChild){
+    theRightSide.removeChild(theRightSide.firstChild)
+  };
+  generateFaces();
+};
+
+
+};
+
+</script>
+
+</head>
+<body id="thebody" onload="generateFaces()">
+  <h1>The Matching Game</h1>
+  <p>Click on the extra smiling face on the left</p>
+  <div id="leftside"></div>
+  <div id="rightside"></div>
+  <h1 id="score"></h1>
+</body>
+</html>
